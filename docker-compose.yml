@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+    database:
+        container_name: PingPong_DB
+        image: postgres:13.1-alpine
+        environment:
+            POSTGRES_DB: PingPongDB
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: root
+            PGDATA: /var/lib/postgresql/data
+        ports:
+            - 5432:5432
+
+        restart: always
+    
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: pgAdmin
+        ports:
+            - "5050:80"
+        depends_on:
+            - database
+        environment:
+            PGADMIN_DEFAULT_EMAIL: d.lapsar16@gmail.com
+            PGADMIN_DEFAULT_PASSWORD: password 
