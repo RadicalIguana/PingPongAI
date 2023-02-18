@@ -6,6 +6,7 @@ import NotFound from './views/NotFound'
 import Signup from './views/Signup'
 import User from './views/User'
 import Play from './views/Play'
+import Social from './views/Social'
 
 import { Navigate } from 'react-router-dom'
 
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
             {
                 path: '/play',
                 element: <Play />
+            },
+            {
+                path: '/social',
+                element: <Social />
             },
         ]
     },
