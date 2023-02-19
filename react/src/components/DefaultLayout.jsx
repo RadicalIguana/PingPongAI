@@ -53,6 +53,10 @@ export default function DefaultLayout() {
                       <span data-feather="file" className="align-text-bottom"></span>
                       <Link className="nav-link active" to='/user'>Profile</Link>
                   </li>
+                  <li className="nav-item">
+                      <span data-feather="file" className="align-text-bottom"></span>
+                      <Link className="nav-link active" to='/social'>Social</Link>
+                  </li>
                 </ul>
               </div>
             </nav>
