@@ -40,9 +40,11 @@ export default function DefaultLayout() {
             </div>
           </div>
         </header>
-        <div className="container-fluid">
-          <div className="row">
-            <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+
+
+        <div style={{display: 'flex'}}>
+          <div className='col-md-2'>
+            <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar">
               <div className="position-sticky pt-3 sidebar-sticky">
                 <ul className="nav flex-column">
                   <li className="nav-item">
@@ -60,12 +62,15 @@ export default function DefaultLayout() {
                 </ul>
               </div>
             </nav>
-
+          </div>
+          <div className='col-md-10'>
             <main className="main">
-              <Outlet/>
+                <Outlet/>
             </main>
           </div>
         </div>
+
+
       </div>
   )
 }
