@@ -26,18 +26,17 @@ export default function User() {
         .then(() => {
           // TODO: перенаправление на страницу регистрации после удаления аккаунта
         })
-    }
+      }
 
     return (
-      <div className="card w-75">
-        <div className="card-header">
+      <div class="card w-75">
+        <div class="card-header">
           <h2>Профиль пользователя</h2>
         </div>
-        <div className="card-body">
+        <div class="card-body">
           <div className='container'>
             <div className='row'>
               <div className='col'>
-                <h5>ID:</h5>
                 <h5>Имя пользователя:</h5>
                 <h5>Email:</h5>
                 <h5>Количество игр:</h5>
@@ -52,11 +51,18 @@ export default function User() {
                 <h5>{user.name}</h5>
                 <h5>{user.email}</h5>
                 <h5>total</h5>
+                  <div className='col mt-2'><button className='btn btn-primary'>Редактировать</button></div>
+                  <div className='col mt-2'><button className='btn btn-danger'>Удалить</button></div>
+                </div>
+              </div>
+              <div className='col'>
+                <h5>username</h5>
+                <h5>email</h5>
+                <h5>total games</h5>
                 <h5>winrate</h5>
               </div>
             </div>  
           </div>
         </div>
-      </div>
     )
 }
