@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useStateContext } from '../contexts/contextProvider'
 import axiosClient from '../axios-client'
 
+// TODO Добавить историю игр
+
 export default function User() {
 
     const navigate = useNavigate()
