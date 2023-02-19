@@ -4,6 +4,7 @@ import { useStateContext } from '../contexts/contextProvider'
 import axiosClient from '../axios-client'
 
 // TODO Добавить историю игр
+// TODO Добавить вывод ошибок при изменении профиля
 
 export default function User() {
 
@@ -29,14 +30,15 @@ export default function User() {
       }
 
     return (
-      <div class="card w-75">
-        <div class="card-header">
+      <div className="card w-75">
+        <div className="card-header">
           <h2>Профиль пользователя</h2>
         </div>
-        <div class="card-body">
+        <div className="card-body">
           <div className='container'>
             <div className='row'>
               <div className='col'>
+                <h5>ID:</h5>
                 <h5>Имя пользователя:</h5>
                 <h5>Email:</h5>
                 <h5>Количество игр:</h5>
@@ -51,15 +53,8 @@ export default function User() {
                 <h5>{user.name}</h5>
                 <h5>{user.email}</h5>
                 <h5>total</h5>
-                  <div className='col mt-2'><button className='btn btn-primary'>Редактировать</button></div>
-                  <div className='col mt-2'><button className='btn btn-danger'>Удалить</button></div>
-                </div>
-              </div>
-              <div className='col'>
-                <h5>username</h5>
-                <h5>email</h5>
-                <h5>total games</h5>
                 <h5>winrate</h5>
+                </div>
               </div>
             </div>  
           </div>
