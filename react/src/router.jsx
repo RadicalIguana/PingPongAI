@@ -5,7 +5,7 @@ import Login from './views/Login'
 import NotFound from './views/NotFound'
 import Signup from './views/Signup'
 import User from './views/User'
-import Play from './views/Play'
+import Play from './views/Game/Play'
 import Social from './views/Social'
 
 import { Navigate } from 'react-router-dom'
