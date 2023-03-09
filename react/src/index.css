@@ -228,3 +228,7 @@ table > tbody > tr > td {
     color: white;
     border-radius: 0.5rem;
 }
+
+.canvas {
+  margin-bottom: 100px;
+}
