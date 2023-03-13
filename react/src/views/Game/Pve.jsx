@@ -1,8 +1,6 @@
 import React from 'react'
 import { ReactP5Wrapper } from 'react-p5-wrapper'
 
-import Game from './game'
-
 import { Neat as _Neat, methods, architect } from 'neataptic'
 
 function sketch(p5) {
