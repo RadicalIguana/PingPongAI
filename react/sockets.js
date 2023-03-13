@@ -1,29 +1,12 @@
 
-const express = require('express')
-const app = express()
-const server= require('http').createServer(app);
-const io = require('socket.io')(server,{
-    cors:{
-        origin: '*',
-    }
-})
-
-
-const PORT = 4000;
-const HOST = '192.168.0.165'
-
-
-
-
-server.listen(PORT, HOST, ()=>{
-    console.log(`Listening on ${HOST}:${PORT} ...`)
-});
 
 let readyPlayerCount = 0;
 
-const pongNameSpace = io.of('/pong')    
+function listen(io){
+    const pongNameSpace = io.of('/pong');
+    
 
-io.sockets.on('connection', (socket) => {
+    pongNameSpace.on('connection', (socket) =>{
         let room;
     
         console.log('a user connected', socket.id);
@@ -38,7 +21,7 @@ io.sockets.on('connection', (socket) => {
 
         if (readyPlayerCount%2 ===0){
             // broadcast
-            io.sockets.in(room).emit('startGame', socket.id)
+            pongNameSpace.in(room).emit('startGame', socket.id)
         }
     })
 
@@ -55,4 +38,8 @@ io.sockets.on('connection', (socket) => {
         socket.leave(room)
     })
 })
+}
 
+
+
+module.exports = {listen};

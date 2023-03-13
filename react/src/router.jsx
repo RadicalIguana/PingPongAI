@@ -10,6 +10,8 @@ import Social from './views/Social'
 
 import { Navigate } from 'react-router-dom'
 import UserEditForm from './views/UserEditForm'
+import Pvp from './views/Game/Pvp'
+import Pve from './views/Game/Pve'
 
 const router = createBrowserRouter([
 
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
             {
                 path: '/play',
                 element: <Play />
+            },
+            {
+                path: '/play/pvp',
+                element: <Pvp />
+            },
+            {
+                path: '/play/pve',
+                element: <Pve />
             },
             {
                 path: '/social',
