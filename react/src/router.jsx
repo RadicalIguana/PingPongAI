@@ -5,9 +5,13 @@ import Login from './views/Login'
 import NotFound from './views/NotFound'
 import Signup from './views/Signup'
 import User from './views/User'
-import Play from './views/Play'
+import Play from './views/Game/Play'
+import Social from './views/Social'
 
 import { Navigate } from 'react-router-dom'
+import UserEditForm from './views/UserEditForm'
+import Pvp from './views/Game/Pvp'
+import Pve from './views/Game/Pve'
 
 const router = createBrowserRouter([
 
@@ -24,8 +28,24 @@ const router = createBrowserRouter([
                 element: <User />
             },
             {
+                path: '/user/:id',
+                element: <UserEditForm />
+            },
+            {
                 path: '/play',
                 element: <Play />
+            },
+            {
+                path: '/play/pvp',
+                element: <Pvp />
+            },
+            {
+                path: '/play/pve',
+                element: <Pve />
+            },
+            {
+                path: '/social',
+                element: <Social/>
             },
         ]
     },
