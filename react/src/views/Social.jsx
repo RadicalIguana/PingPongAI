@@ -6,9 +6,12 @@ export default function Social() {
   const [users, setUsers] = useState([])
   const [friends, setFriends] = useState([])
 
-  const [existing, setExisting] = useState(false)
+  const [existing, setExisting] = useState(false) 
+  const [accepting, setAccepting] = useState(false)
   const [errors, setErrors] = useState(null)
   const [added, setAdded] = useState(false)
+
+  const [buttonText, setButtonText] = useState('Отменить заявку')
 
   const usernameRef = useRef()
 
@@ -19,7 +22,6 @@ export default function Social() {
   const getUsers = () => {
     axiosClient.get("/social")
       .then(({data}) => {
-        console.log(data);
         setUsers(data.data)
       })
   }
@@ -61,6 +63,17 @@ export default function Social() {
       })
   }
 
+  const onCancel = (id) => {
+    if (!window.confirm("Are you sure about cancel?")) {
+      return
+    }
+
+    setButtonText('Заявка отменена')
+
+    axiosClient.post('/delete', {id})
+      
+  }
+
   return (
     <div className='container'>
       <div className='w-100'>
@@ -75,7 +88,8 @@ export default function Social() {
           <div className="card card-body">
             <table className="table">
               <tbody>
-
+                {/* TODO Change existing to accepting */}
+                {/* Must show list only accepted friends */}
                 {
                   existing
                     ? friends.map((f) => (
@@ -115,12 +129,29 @@ export default function Social() {
                   <td>{u.name}</td>
                   <td>{u.email}</td>
                   <td>
-                    <div>
-                      <Link className='btn btn-success' to='/user'>Профиль</Link>
-                      &nbsp;
-                      &nbsp;
-                      <button className='btn btn-danger' onClick={ev => onDelete(u.id)}>Удалить</button>
-                    </div>
+
+                    {
+                      u.friendship_status == 0 &&
+                         <div>
+                          <Link className='btn btn-success' to='/user'>Профиль</Link>
+                          &nbsp;
+                          &nbsp;
+                          <button className='btn btn-danger' onClick={ev => onCancel(u.id)}>{buttonText}</button>
+                        </div>
+                    }
+                    {
+                      u.friendship_status == 1 &&
+                        <div>
+                          <Link className='btn btn-success' to='/user'>Профиль</Link>
+                          &nbsp;
+                          &nbsp;
+                          <button className='btn btn-danger' onClick={ev => onDelete(u.id)}>Удалить</button>
+                        </div>
+                    }
+                    {
+                      u.friendship_status == -1 &&
+                        <div>Заявка отклонена</div>
+                    }
                   </td>
                 </tr>
             ))}

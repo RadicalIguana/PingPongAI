@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/find', [UserFriendController::class, 'find']);
     Route::post('/add', [UserFriendController::class, 'add']);
     Route::post('/delete', [UserFriendController::class, 'delete']);
+    Route::put('/cancel', [UserFriendController::class, 'cancel']);
     
     Route::get('/user', function (Request $request) {
         return $request->user();
