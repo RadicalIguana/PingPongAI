@@ -1,13 +1,49 @@
+import axios from 'axios'
 import { useEffect, useRef } from 'react'
 import { io } from 'socket.io-client'
+import axiosClient from '../../axios-client'
+import { useStateContext } from '../../contexts/contextProvider'
+
+const HOST = 'http://192.168.0.7:4000'
+//const HOST = 'http://localhost:4000'
 
 export default function Pvp() {
-    useEffect(() => {
-  
+
+  useEffect(() => {
+
+      let socket
+
+      let id
+      let username 
+
+      const getUsers = async () => {
+        await axiosClient.get('/user')
+          .then(({data}) => {
+            id = data.id
+            username = data.name
+          })
+      }
+
+      const postResult = async () => {
+        const payload = {
+          winner: winner,
+          loser: loser,
+          game_result: `${score[0]} : ${score[1]}`
+        }
+        await axiosClient.post('/storeResult', payload)
+          .then((response) => {
+            console.log(response.status)
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      }
+
       const canvas = document.getElementById('canvas')
       const ctx = canvas.getContext('2d')
-  
-      const socket = io.connect('http://192.168.0.165:4000')
+
+      let playAnimation = true
+
       let isReferee = false
       let paddleIndex = 0
   
@@ -34,6 +70,12 @@ export default function Pvp() {
   
       // Score
       let score = [ 0, 0 ]
+
+      // Players
+      let players = []
+      let userIds = []
+      let winner 
+      let loser
   
       function createCanvas() {
         canvas.width = width
@@ -46,8 +88,27 @@ export default function Pvp() {
         ctx.fillRect(0, 0, width, height)
   
         ctx.fillStyle = 'white'
-        ctx.font = '32px Courier New'
-        ctx.fillText("Waiting for opponent...", 20, (canvas.height / 2) - 30)
+        ctx.font = '16px Courier New'
+        ctx.fillText("Waiting for opponent...", 50, (canvas.height / 2) - 30)
+      }
+
+      function renderWinner() {
+        ctx.fillStyle = 'black'
+        ctx.fillRect(0, 0, width, height)
+
+        ctx.fillStyle = 'white'
+        ctx.font = '16px Courier New'
+        if (score[0] == 3) {
+          winner = userIds[1]
+          loser = userIds[0]
+          ctx.fillText(`${players[1]} Wins!`, 60, (canvas.height / 2) - 30)
+        }
+        if (score[1] == 3) {
+          winner = userIds[0]
+          loser = userIds[1]
+          ctx.fillText(`${players[0]} Wins!`, 80, (canvas.height / 2) - 30)
+        }
+        ctx.fillText(`${score[0]} : ${score[1]}`, 125, (canvas.height / 2) - 60)
       }
   
       function renderCanvas() {
@@ -62,8 +123,6 @@ export default function Pvp() {
         // Bottom paddle
         ctx.fillRect(paddleX[0], height - 15, paddleWidth, paddleHeight)
       
-        // Dashed center line
-  
   
         // Ball
         ctx.beginPath()
@@ -73,8 +132,8 @@ export default function Pvp() {
   
         // Score
         ctx.font = "32px Courier New"
-        ctx.fillText(score[1], 20, (canvas.height / 2) + 50)
-        ctx.fillText(score[0], 20, (canvas.height / 2) - 30)
+        ctx.fillText(score[0], 20, (canvas.height / 2) + 50)
+        ctx.fillText(score[1], 20, (canvas.height / 2) - 30)
       }
   
       function ballMove() {
@@ -149,26 +208,64 @@ export default function Pvp() {
             score[0]++
           }
         }
+
       }
   
       function animate() {
+
+        if (score[1] === 3 || score[0] === 3) {
+          playAnimation = false
+        }
+        
         if (isReferee) {
           ballMove()
           ballBoundaries()
         }
-        renderCanvas()
-        window.requestAnimationFrame(animate)
+
+        if (playAnimation) {
+          renderCanvas()
+          window.requestAnimationFrame(animate)
+        } else {
+          renderWinner()
+
+          setTimeout(async () => {
+            // Post game result to the database
+
+            // A player with the value isReferee == true sends post to the server
+            // This allows you to send a request once.
+            if (isReferee) {
+              await postResult()
+            }
+
+            // Changing scores to zero and 'restarting' the game
+            score = [ 0, 0 ]
+            playAnimation = true
+            
+
+            // TODO make two buttons: 
+            // TODO 1st one is for restarting the game (just changes playAnimation to true)
+            // TODO 2nd will disconnect both players from socket
+          })
+        }
       }
+
   
-      function loadGame() {
+      async function loadGame() {
         createCanvas()
         renderIntro()
+        socket = io.connect(HOST)
+
+        await getUsers()
+
+        socket.emit('getData', id, username)
         socket.emit('ready')
       }
   
       function startGame() {
+
         paddleIndex = isReferee ? 0 : 1
         window.requestAnimationFrame(animate)
+
         canvas.addEventListener('mousemove', (e) => {
           playerMoved = true
           paddleX[paddleIndex] = e.offsetX
@@ -184,21 +281,36 @@ export default function Pvp() {
           canvas.style.cursor = 'none'
         })
       }
-  
+
+
       loadGame()
   
       socket.on('connect', () => {
-        console.log(`Connected as ${socket.id}`);
+        
+      })
+
+      socket.on('disconnect', () => {
+        console.log(`Disconnected ${socket.id}`);
+      })
+
+      socket.on('getData', (ids, users) => {
+        userIds = ids
+        players = users
+        console.log(userIds);
+        console.log(players);
       })
   
       socket.on('startGame', (refreeId) => {
-        console.log(`Refree is ${refreeId}`);
+        console.log(`Id: ${socket.id}`);
+        console.log(`RefereeId: ${refreeId}`);
   
         isReferee = socket.id === refreeId
-  
+
+
+
         startGame()
       })
-  
+
       socket.on('paddleMove', (paddleData) => {
         const opponentPaddleIndex = 1 - paddleIndex
         paddleX[opponentPaddleIndex] = paddleData.xPosition

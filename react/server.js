@@ -1,4 +1,6 @@
 
+
+const { log } = require('console');
 const express = require('express')
 const app = express()
 const server= require('http').createServer(app);
@@ -10,10 +12,8 @@ const io = require('socket.io')(server,{
 
 
 const PORT = 4000;
-const HOST = '192.168.0.165'
-
-
-
+const HOST = '192.168.0.7'
+// const HOST = 'localhost'
 
 server.listen(PORT, HOST, ()=>{
     console.log(`Listening on ${HOST}:${PORT} ...`)
@@ -21,26 +21,43 @@ server.listen(PORT, HOST, ()=>{
 
 let readyPlayerCount = 0;
 
-const pongNameSpace = io.of('/pong')    
+let usersId = []
+let users = []
 
 io.sockets.on('connection', (socket) => {
         let room;
-    
+
         console.log('a user connected', socket.id);
 
-    socket.on('ready', ()=>{
+    socket.on('ready', () => {
         room = 'room ' + Math.floor(readyPlayerCount/2);
         socket.join(room);
-        console.log('Player ready ', socket.id,room);
-
+        console.log('Player ready ', socket.id, room);
+        
         readyPlayerCount++;
         console.log(readyPlayerCount)
 
         if (readyPlayerCount%2 ===0){
             // broadcast
+
+            let lastTwoUsersId = usersId.slice(-2)
+            let lastTwoUsers = users.slice(-2)
+
             io.sockets.in(room).emit('startGame', socket.id)
+
+            // TODO Вот эта хуета возвращает на клиента последних двух юзеров, которые играют в одну игру
+            io.sockets.to(room).emit('getData', lastTwoUsersId, lastTwoUsers)
+
+            console.log(users);
+            
         }
     })
+
+    socket.on('getData', (id, name) => {
+        console.log(name)
+        usersId.push(id)
+        users.push(name)
+    })    
 
     socket.on('paddleMove', (paddleData)=>{
         socket.to(room).emit('paddleMove', paddleData);
@@ -55,4 +72,3 @@ io.sockets.on('connection', (socket) => {
         socket.leave(room)
     })
 })
-

@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const HOST = '192.168.0.165'
+const HOST = '192.168.0.7'
+// const HOST = 'localhost'
 
 const axiosClient = axios.create({
     // baseURL: `http://127.0.0.1:8000/api`,

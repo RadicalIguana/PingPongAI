@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\GameController;
 use App\Http\Controllers\Api\UserFriendController;
 
 /*
@@ -24,6 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/find', [UserFriendController::class, 'find']);
     Route::post('/add', [UserFriendController::class, 'add']);
     Route::post('/delete', [UserFriendController::class, 'delete']);
+
+    ROute::post('/storeResult', [GameController::class, 'storeResult']);
     
     Route::get('/user', function (Request $request) {
         return $request->user();
