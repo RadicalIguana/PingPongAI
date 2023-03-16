@@ -224,7 +224,7 @@ import Pve from './Pve'
 export default function Play() {
   return (
     <div>
-      <Link to='/play/pvp' className='btn btn-danger'>Игра против игрока</Link>
+      <a href='/play/pvp' className='btn btn-danger'>Игра против игрока</a>
       &nbsp;
       &nbsp;
       &nbsp;
