@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('users_friends', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
             $table->integer('friend_id')->unsigned();
+            $table->integer('friendship_status');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('friend_id')->references('id')->on('users')->onDelete('cascade');

@@ -4,8 +4,8 @@ import { io } from 'socket.io-client'
 import axiosClient from '../../axios-client'
 import { useStateContext } from '../../contexts/contextProvider'
 
-const HOST = 'http://192.168.0.7:4000'
-//const HOST = 'http://localhost:4000'
+//const HOST = 'http://192.168.0.7:4000'
+const HOST = 'http://localhost:4000'
 
 export default function Pvp() {
 
@@ -229,22 +229,13 @@ export default function Pvp() {
           renderWinner()
 
           setTimeout(async () => {
-            // Post game result to the database
-
-            // A player with the value isReferee == true sends post to the server
-            // This allows you to send a request once.
             if (isReferee) {
               await postResult()
             }
 
-            // Changing scores to zero and 'restarting' the game
             score = [ 0, 0 ]
             playAnimation = true
             
-
-            // TODO make two buttons: 
-            // TODO 1st one is for restarting the game (just changes playAnimation to true)
-            // TODO 2nd will disconnect both players from socket
           })
         }
       }

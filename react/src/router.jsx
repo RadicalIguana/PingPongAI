@@ -5,6 +5,7 @@ import Login from './views/Login'
 import NotFound from './views/NotFound'
 import Signup from './views/Signup'
 import User from './views/User'
+import UserProfile from './views/UserProfile'
 import Play from './views/Game/Play'
 import Social from './views/Social'
 
@@ -26,6 +27,14 @@ const router = createBrowserRouter([
             {
                 path: '/user',
                 element: <User />
+            },
+            {
+                path: '/user',
+                element: <User />
+            },
+            {
+                path: '/show/:id',
+                element: <UserProfile />
             },
             {
                 path: '/user/:id',

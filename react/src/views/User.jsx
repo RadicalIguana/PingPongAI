@@ -30,7 +30,8 @@ export default function User() {
       }
 
     return (
-      <div className="card w-75">
+      <div className='container'>
+        <div className="card w-75">
         <div className="card-header">
           <h2>Профиль пользователя</h2>
         </div>
@@ -59,5 +60,24 @@ export default function User() {
             </div>  
           </div>
         </div>
+
+        <div>
+        <h1>История игр</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Winner</th>
+                <th scope="col">Loser</th>
+                <th scope="col">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+            </table>
+        </div>
+
+      </div>
     )
 }

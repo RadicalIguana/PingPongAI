@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GameController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\UserFriendController;
 
 /*
@@ -20,12 +21,21 @@ use App\Http\Controllers\Api\UserFriendController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    Route::apiResource('/user', UserController::class);
     Route::apiResource('/social', UserFriendController::class);
     Route::post('/find', [UserFriendController::class, 'find']);
     Route::post('/add', [UserFriendController::class, 'add']);
     Route::post('/delete', [UserFriendController::class, 'delete']);
+    Route::post('/denied', [UserFriendController::class, 'denied']);
+    Route::put('/accept', [UserFriendController::class, 'accept']);
+    Route::get('/check', [UserFriendController::class, 'check']);
 
-    ROute::post('/storeResult', [GameController::class, 'storeResult']);
+    Route::post('/storeResult', [GameController::class, 'storeResult']);
+    Route::post('/winners', [GameController::class, 'winners']);
+    Route::post('/losers', [GameController::class, 'losers']);
+    Route::post('/scores', [GameController::class, 'scores']);
+
+
     
     Route::get('/user', function (Request $request) {
         return $request->user();

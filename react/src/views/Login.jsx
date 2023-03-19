@@ -42,13 +42,15 @@ export default function Login() {
       <main className="form-signin w-100">
         <form onSubmit={onSubmit}>
           <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+
           {errors && 
-              <div className='alert'>
+              <div className='alert alert-danger alert-dismissible' role='alert'>
                 {Object.keys(errors).map(key => (
                   <p key={key}>{errors[key][0]}</p>
                 ))}
               </div>
             }
+
           <div className="form-floating">
             <input ref={emailRef} type="email" className="form-control" id="floatingInput" placeholder="name@example.com" />
             <label htmlFor="floatingInput">Email address</label>
