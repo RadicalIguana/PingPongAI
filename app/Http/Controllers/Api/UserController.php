@@ -7,7 +7,10 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -74,5 +77,12 @@ class UserController extends Controller
         $user->delete();
 
         return response("User deleted", 204);
+    }
+
+    public function data(Request $request): JsonResponse
+    {
+        return response()->json([
+            'data' => Auth::user()->id
+        ]);
     }
 }

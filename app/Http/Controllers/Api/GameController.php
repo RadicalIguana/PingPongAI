@@ -22,71 +22,73 @@ class GameController extends Controller
     {
         $winner = $request['winner'];
         $loser = $request['loser'];
+        $winner_name = $request['winner_name'];
+        $loser_name = $request['loser_name'];
         $game_result = $request['game_result'];
 
         DB::table('games')->insert([
             'winner_id' => $winner,
             'loser_id' => $loser,
+            'winner_name' => $winner_name,
+            'loser_name' => $loser_name,
             'game_result' => $game_result
         ]);
 
         return response('Result added', 200);
     }
 
-    public function storeResult(Request $request): JsonResponse
+    public function result(Request $request): JsonResponse
     {
         $id = $request['id'];
 
-        $results = DB::table('users');
-
-        return response()->json([
-            'data' => ''
-        ], 200);
-    }
-
-    public function winners(Request $request): JsonResponse
-    {
-        $id = $request['id'];
-
-        $winners = DB::table('users')
-            ->select('users.name')
-            ->join('games', 'users.id', '=', 'games.winner_id')
-            ->where('winner_id', '=', $id)
-            ->get();
-
-        return response()->json([
-            'data' => $winners
-        ], 200);
-    }
-
-    public function losers(Request $request): JsonResponse
-    {
-        $id = $request['id'];
-
-        $losers = DB::table('games')
-            ->select('users.name')
-            ->join('users', 'users.id', '=', 'games.loser_id')
-            ->where('loser_id', '=', $id)
-            ->get();
-
-        return response()->json([
-            'data' => $losers
-        ], 200);
-    }
-
-    public function scores(Request $request): JsonResponse
-    {
-        $id = $request['id'];
-
-        $scores = DB::table('games')
-            ->select('game_result')
+        $result = DB::table('games')
+            ->select('winner_name', 'loser_name', 'game_result')
             ->where('winner_id', '=', $id)
             ->orWhere('loser_id', '=', $id)
             ->get();
 
         return response()->json([
-            'data' => $scores
+            'data' => $result
         ], 200);
     }
 
+    public function total(Request $request): JsonResponse
+    {
+        $id = $request['id'];
+
+        $total = DB::table('games')
+            ->where('winner_id', '=', $id)
+            ->orWhere('loser_id', '=', $id)
+            ->count();
+
+        return response()->json([
+            'data' => $total
+        ], 200);
+    }
+
+    public function winrate(Request $request): JsonResponse
+    {
+        $id = $request['id'];
+
+        $total = DB::table('games')
+            ->where('winner_id', '=', $id)
+            ->orWhere('loser_id', '=', $id)
+            ->count();
+
+        $wins = DB::table('games')
+            ->where('winner_id', '=', $id)
+            ->count();
+
+        if ($wins == 0) {
+            return response()->json([
+                'data' => 0
+            ], 200);
+        }
+
+        $winrate = $wins / $total * 100;
+
+        return response()->json([
+            'data' => $winrate
+        ], 200);
+    }
 }

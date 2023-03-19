@@ -150,7 +150,7 @@ export default function Social() {
                           <td>{f.name}</td>
                           <td>{f.email}</td>
                           <div>
-                            <Link className='btn btn-success' to='/user'>Профиль</Link>
+                            <Link className='btn btn-success' to={`/show/${f.id}`}>Профиль</Link>
                             &nbsp;
                             &nbsp;
                             {

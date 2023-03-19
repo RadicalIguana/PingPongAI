@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::apiResource('/user', UserController::class);
+    Route::post('/data', [UserController::class, 'data']);
     Route::apiResource('/social', UserFriendController::class);
     Route::post('/find', [UserFriendController::class, 'find']);
     Route::post('/add', [UserFriendController::class, 'add']);
@@ -31,10 +32,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/check', [UserFriendController::class, 'check']);
 
     Route::post('/storeResult', [GameController::class, 'storeResult']);
-    Route::post('/winners', [GameController::class, 'winners']);
-    Route::post('/losers', [GameController::class, 'losers']);
-    Route::post('/scores', [GameController::class, 'scores']);
-
+    Route::post('/result', [GameController::class, 'result']);
+    Route::post('/total', [GameController::class, 'total']);
+    Route::post('/winrate', [GameController::class, 'winrate']);
 
     
     Route::get('/user', function (Request $request) {

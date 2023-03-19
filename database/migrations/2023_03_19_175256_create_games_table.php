@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer('winner_id')->unsigned();
             $table->integer('loser_id')->unsigned();
+            $table->string('winner_name');
+            $table->string('loser_name');
             $table->string('game_result');
             $table->timestamps();
 

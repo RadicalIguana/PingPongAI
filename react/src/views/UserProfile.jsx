@@ -12,17 +12,51 @@ export default function UserProfile() {
         email: ''
     })
 
+    const [total, setTotal] = useState()
+    const [winrate, setWinrate] = useState()
+
+    const [result, setResult] = useState([])
+    const [empty, setEmpty] = useState(false)
+
     const [deleteButtonText, setDeleteButtonText] = useState('Удалить из друзей')
 
     useEffect(() => {
         axiosClient.get(`/user/${id}`)
             .then(({data}) => {
+              debugger
                 setUser(data)
             })
-        getWinners()
-        getLosers()
-        getScores()
+        getResult()
+        getTotal()
+        getWinrate()
     }, []) 
+
+    const getResult = async () => {
+      setEmpty(false)
+      await axiosClient.post('/result', {id})
+          .then(({data}) => {
+              debugger
+              console.log(id);
+              setResult(data.data)
+              debugger
+              if (data.data.length == 0) setEmpty(true)
+          })
+    }
+
+    const getTotal = async () => {
+      await axiosClient.post('/total', {id})
+        .then(({data}) => {
+          setTotal(data.data)
+        })
+    }
+
+    const getWinrate = async () => {
+      await axiosClient.post('/winrate', {id})
+        .then(({data}) => {
+          setWinrate(data.data)
+        })
+    }
+
 
     // TODO проверить работу функции
     const onDelete = (id) => {
@@ -37,31 +71,9 @@ export default function UserProfile() {
         setDeleteButtonText('Удалить из друзей')
       }
 
-    const getWinners = () => {
-        axiosClient.post('/winners', {id})
-            .then(({data}) => {
-                console.log(data);
-                debugger
-            })
-    }
-
-    const getLosers = () => {
-        axiosClient.post('/losers', {id})
-            .then(({data}) => {
-                console.log(data);
-                debugger
-            })
-    }
-    const getScores = () => {
-        axiosClient.post('/scores', {id})
-            .then(({data}) => {
-                console.log(data);
-                debugger
-            })
-    }
     return (
         <div className='container'>
-            <div className="card w-75">
+            <div className="card w-75 mx-auto">
         <div className="card-header">
           <h2>Профиль пользователя</h2>
         </div>
@@ -82,29 +94,40 @@ export default function UserProfile() {
                 <h5>{user.id}</h5>
                 <h5>{user.name}</h5>
                 <h5>{user.email}</h5>
-                <h5>total</h5>
-                <h5>winrate</h5>
+                <h5>{total}</h5>
+                <h5>{winrate}%</h5>
                 </div>
               </div>
             </div>  
           </div>
         </div>
 
-        <div>
-        <h1>История игр </h1>
-        <table class="table">
+        <div className='container'>
+          <h1 className='text-center'>История игр</h1>
+          <table className="table">
             <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Winner</th>
-                    <th scope="col">Loser</th>
-                    <th scope="col">Score</th>
-                </tr>
+              <tr>
+                <th scope="col">Winner</th>
+                <th scope="col">Loser</th>
+                <th scope="col">Score</th>
+              </tr>
             </thead>
             <tbody>
-                {}
+              {
+                result.map((r) => (
+                  <tr>
+                    <td>{r.winner_name}</td>
+                    <td>{r.loser_name}</td>
+                    <td>{r.game_result}</td>
+                  </tr>
+                ))
+              } 
             </tbody>
-            </table>
+          </table>
+          {
+            empty &&
+              <h1 className='text-center'>История игр пуста</h1>
+          }
         </div>
 
         </div>

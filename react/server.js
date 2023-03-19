@@ -12,8 +12,8 @@ const io = require('socket.io')(server,{
 
 
 const PORT = 4000;
-const HOST = '192.168.0.7'
-// const HOST = 'localhost'
+// const HOST = '192.168.0.7'
+const HOST = 'localhost'
 
 server.listen(PORT, HOST, ()=>{
     console.log(`Listening on ${HOST}:${PORT} ...`)
