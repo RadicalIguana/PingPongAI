@@ -20,11 +20,14 @@ use App\Http\Controllers\Api\UserFriendController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    Route::apiResource('/user', UserController::class);
     Route::apiResource('/social', UserFriendController::class);
     Route::post('/find', [UserFriendController::class, 'find']);
     Route::post('/add', [UserFriendController::class, 'add']);
     Route::post('/delete', [UserFriendController::class, 'delete']);
-    Route::put('/cancel', [UserFriendController::class, 'cancel']);
+    Route::post('/denied', [UserFriendController::class, 'denied']);
+    Route::put('/accept', [UserFriendController::class, 'accept']);
+    Route::get('/check', [UserFriendController::class, 'check']);
     
     Route::get('/user', function (Request $request) {
         return $request->user();

@@ -1,37 +1,44 @@
-import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useStateContext } from '../contexts/contextProvider'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import axiosClient from '../axios-client'
 
-// TODO Добавить историю игр
-// TODO Добавить вывод ошибок при изменении профиля
+export default function UserProfile() {
 
-export default function User() {
+    let {id} = useParams()
+    
+    const [user, setUser] = useState({
+        id: null,
+        name: '',
+        email: ''
+    })
 
-    const navigate = useNavigate()
-    const {user, setUser} = useStateContext()
+    const [deleteButtonText, setDeleteButtonText] = useState('Удалить из друзей')
 
     useEffect(() => {
-      axiosClient.get('/user')
-        .then(({data}) => {
-          setUser(data)
-        })
-    }, [])
+        axiosClient.get(`/user/${id}`)
+            .then(({data}) => {
+                setUser(data)
+            })
+    }, []) 
 
-    const onDelete = (user) => {
-      if (!window.confirm('Удалить пользователя?')) {
-        return
-      }
-
-      axiosClient.delete(`user/${user.id}`)
-        .then(() => {
-          // TODO: перенаправление на страницу регистрации после удаления аккаунта
-        })
+    // TODO проверить работу функции
+    const onDelete = (id) => {
+        if (!window.confirm("Are you sure about that?")) {
+          return
+        }
+        
+        setDeleteButtonText('Удален!')
+    
+        axiosClient.post('/delete', {id}) 
+          .then(() => {
+            getUsers()
+          })
+        setDeleteButtonText('Удалить из друзей')
       }
 
     return (
-      <div className='container'>
-        <div className="card w-75">
+        <div className='container'>
+            <div className="card w-75">
         <div className="card-header">
           <h2>Профиль пользователя</h2>
         </div>
@@ -45,8 +52,7 @@ export default function User() {
                 <h5>Количество игр:</h5>
                 <h5>Процент побед:</h5>
                 <div className='row'>
-                  <div className='col mt-2'><Link to={"/user/"+user.id} className='btn btn-primary'>Редактировать</Link></div>
-                  <div className='col mt-2'><button onClick={ev => onDelete(user)} className='btn btn-danger'>Удалить</button></div>
+                  <div className='col mt-2'><button onClick={ev => onDelete()} className='btn btn-danger'>{deleteButtonText}</button></div>
                 </div>
               </div>
               <div className='col'>
@@ -62,7 +68,7 @@ export default function User() {
         </div>
 
         <div>
-        <h1>История игр</h1>
+        <h1>История игр </h1>
         <table class="table">
             <thead>
                 <tr>
@@ -73,11 +79,12 @@ export default function User() {
                 </tr>
             </thead>
             <tbody>
-              
+                
             </tbody>
             </table>
         </div>
 
-      </div>
+        </div>
+        
     )
 }
