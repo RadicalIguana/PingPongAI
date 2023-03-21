@@ -23,15 +23,11 @@ function sketch(p5) {
     let ballSpeedP, ballSpeedSlider
     let populationSizeP, populationSizeSlider
 
-    let previousPopulation
-
     let endEvalButton
 
     let baseFrame = 0
 
     let END_FRAME_COUNT = 1000
-
-    let loadingFile = false
 
     var Neat = neataptic.Neat;
     var Methods = neataptic.methods;
@@ -42,9 +38,10 @@ function sketch(p5) {
     var MUTATION_RATE = 0.3;
     var ELITISM_RATE = 0.1;
 
-    var USE_TRAINED_POP = false; // use already trained population
 
-    // inputs: vertical displacement of ball from center of paddle, horizontal displacement of ball from center of paddle, ball horizontal velocity, ball vertical velocity, paddle velocity (5)
+    // inputs: vertical displacement of ball from center of paddle, horizontal displacement of ball from center of paddle, 
+    // ball horizontal velocity, ball vertical velocity, paddle velocity (5)
+
     // outputs: vertical paddle velocity (1)
 
     function initNeat(isResetting) {
@@ -81,13 +78,10 @@ function sketch(p5) {
     );
     neat.generation = 1;
     if (isResetting) {
-        // copy previous population into new population
         var smallerSize = populationSize < oldPop.length ? populationSize : oldPop.length;
         for (var i = 0; i < smallerSize; i++) {
         neat.population[i] = oldPop[i];
         }
-    } else if (USE_TRAINED_POP) {
-        getPopulationFromFile();
     }
     }
 
@@ -138,7 +132,6 @@ function sketch(p5) {
         this.leftPaddle = new Paddle(30, 1, this)
         this.rightPaddle = new Paddle(470, 2, this)
     
-        // show all square
         this.show = (p5) => {
             if (this.done) {
                 return 
@@ -150,7 +143,6 @@ function sketch(p5) {
 
         }
     
-        // update physics and check if dead
         this.update = () => {
             if (this.done) {
                 return
@@ -171,7 +163,6 @@ function sketch(p5) {
         this.x = p5.width / 2
         this.y = p5.height / 2
 
-        // random direction
         this.vx = p5.random([-BASE_BALL_SPEED, BASE_BALL_SPEED])
         this.vy = p5.random(-0.5, -0.5)
         this.size = 8
@@ -223,6 +214,8 @@ function sketch(p5) {
               } else {
                 var withinPaddleX = this.x + this.size / 2 >= paddle.x - paddle.width / 2 && this.x + this.size / 2 <= paddle.x + paddle.width / 2;
               }
+
+              // let withinPaddleY = this.y + this.size - 80 / 2 > paddle.y - paddle.height / 2 && this.y - this.size - 70 / 2 < paddle.y + paddle.height / 2;
               let withinPaddleY = this.y + this.size / 2 > paddle.y - paddle.height / 2 && this.y - this.size / 2 < paddle.y + paddle.height / 2;
             
               if (withinPaddleX && withinPaddleY) {
@@ -230,6 +223,7 @@ function sketch(p5) {
           
                 var relativeIntersectY = paddle.y - this.y;
                 var normalizedRelativeIntersectionY = relativeIntersectY / (paddle.height / 2);
+                // var bounceAngle = (normalizedRelativeIntersectionY - 10 ) * MAX_BOUNCE_ANGLE;
                 var bounceAngle = normalizedRelativeIntersectionY * MAX_BOUNCE_ANGLE;
           
                 if (p5.random(1) < randomBounceRate) {
@@ -247,8 +241,9 @@ function sketch(p5) {
     function Paddle(x, side, game) {
         this.x = x
         this.width = 10
-        this.height = 80
-        this.y = 0
+        // this.height = 80
+        this.height = 85
+        this.y = p5.height / 2
         this.vy = 0
         this.side = side // 1 -> left, 2 -> right
 
@@ -256,14 +251,16 @@ function sketch(p5) {
 
         this.update = (p5) => {
             if (isPersonPlaying && this.side == 2) {
-                var newY = p5.constrain(p5.mouseY, this.height / 2 - 40, (p5.height - this.height / 2) - 40)
+                // var newY = p5.constrain(p5.mouseY, this.height / 2 - 40, (p5.height - this.height / 2) - 40)
+                var newY = p5.constrain(p5.mouseY, this.height / 2, p5.height - this.height / 2)
             } else {
                 let input = this.detect()
                 let output = this.game.brain.activate(input)
 
                 this.vy = output[0]
 
-                var newY = p5.constrain(this.y + this.vy, this.height / 2 - 40, (p5.height - this.height / 2) - 40)
+                // var newY = p5.constrain(this.y + this.vy, this.height / 2 - 40, (p5.height - this.height / 2) - 40)
+                var newY = p5.constrain(this.y + this.vy, this.height / 2, p5.height - this.height / 2)
             }
 
             this.y = newY
@@ -299,11 +296,9 @@ function sketch(p5) {
 
     function configChanged() {
         ballSpeed = ballSpeedSlider.value()
-        // ball speed info
         ballSpeedP.html('Ball Speed: ' + ballSpeed)
         if (populationSize != populationSizeSlider.value()) {
             populationSize = populationSizeSlider.value()
-            // population size info
             populationSizeP.html('Population Size: ' + populationSize)
             initNeat(true)
             endEvaluation()
@@ -311,14 +306,13 @@ function sketch(p5) {
     }   
 
     function  infoPHTML() {
-        // TODO ADD! ${neat.generation} after Generation:
         return `Generation: ${neat.generation}<br>Highest Score: ${highestScore}<br>Current Highest Score: ${curHighestScore}<br>Remaining Alive: ${remainingAlive}`
     }
 
     p5.setup = () => {
         p5.createCanvas(500, 500)
         // canvas.parent('sketch')
-        // p5.rectMode(p5.CENTER)
+        p5.rectMode(p5.CENTER)
         initNeat()
 
         p5.infoP = p5.createP(infoPHTML())

@@ -8,22 +8,8 @@ export default function DefaultLayout() {
   const {user, token, setUser, setToken} = useStateContext()
 
   const [friend, setFriend] = useState(false)
-  
-  if (!token) {
-    return <Navigate to='/login'/>
-  }
 
-  const onLogout = (ev) => {
-    ev.preventDefault()
-
-    axiosClient.post('/logout')
-      .then(() => {
-        setUser({})
-        setToken(null)
-      })
-  }
-
-  let userId  
+  let userId 
 
   useEffect(() => {
     axiosClient.get('/user')
@@ -43,6 +29,20 @@ export default function DefaultLayout() {
         }
       })
   }, [])
+  
+  if (!token) {
+    return <Navigate to='/login'/>
+  }
+
+  const onLogout = (ev) => {
+    ev.preventDefault()
+
+    axiosClient.post('/logout')
+      .then(() => {
+        setUser({})
+        setToken(null)
+      })
+  }
 
   return (
     <div>

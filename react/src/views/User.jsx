@@ -18,6 +18,8 @@ export default function User() {
 
     let id
 
+    const myModal = document.getElementById('exampleModal')
+
     useEffect(() => {
         
       async function fetchData () {
@@ -81,6 +83,14 @@ export default function User() {
         })
       }
 
+      
+  
+      if (myModal) {
+        myModal.addEventListener('show.bs.modal', () => {
+          myInput.focus()
+        })
+      }
+
     return (
       <div className='container'>
         <div className="card w-75 mx-auto">
@@ -98,7 +108,25 @@ export default function User() {
                 <h5>Процент побед:</h5>
                 <div className='row'>
                   <div className='col mt-2'><Link to={"/user/"+user.id} className='btn btn-primary'>Редактировать</Link></div>
-                  <div className='col mt-2'><button onClick={ev => onDelete(user)} className='btn btn-danger'>Удалить</button></div>
+                  <div className='col mt-2'><button  className='btn btn-danger' data-bs-toggle='modal' data-bs-target='#exampleModal'>Удалить</button></div>
+                  {/* Modal window */}
+                  <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div className="modal-dialog">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h1 className="modal-title fs-5" id="exampleModalLabel">Удаление из друзей</h1>
+                          <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body"  style={{whiteSpace: 'pre-wrap'}}>
+                          Вы уверены, что хотите удалить аккаунт?
+                        </div>
+                        <div className="modal-footer">
+                          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                          <button type="button" className="btn btn-danger" onClick={ev => onDelete(user)}>Удалить</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className='col'>

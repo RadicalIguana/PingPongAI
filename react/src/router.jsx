@@ -13,6 +13,7 @@ import { Navigate } from 'react-router-dom'
 import UserEditForm from './views/UserEditForm'
 import Pvp from './views/Game/Pvp'
 import Pve from './views/Game/Pve'
+import ChangePassword from './views/ChangePassword'
 
 const router = createBrowserRouter([
 
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
             {
                 path: '/user/:id',
                 element: <UserEditForm />
+            },
+            {
+                path: '/change',
+                element: <ChangePassword/>
             },
             {
                 path: '/play',

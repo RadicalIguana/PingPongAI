@@ -106,7 +106,7 @@ export default function Pvp() {
           winner_name = players[1]
           loser = userIds[0]
           loser_name = players[0]
-          debugger
+          
           ctx.fillText(`${players[1]} Wins!`, 60, (canvas.height / 2) - 30)
         }
         if (score[1] == 3) {
@@ -114,7 +114,7 @@ export default function Pvp() {
           winner_name = players[0]
           loser = userIds[1]
           loser_name = players[1]
-          debugger
+          
           ctx.fillText(`${players[0]} Wins!`, 80, (canvas.height / 2) - 30)
         }
         ctx.fillText(`${score[0]} : ${score[1]}`, 125, (canvas.height / 2) - 60)
@@ -198,7 +198,7 @@ export default function Pvp() {
             score[1]++
           }
         }
-        // Bounce off computer paddle top
+        // Bounce off paddle top
         if (ballY < paddleDif) {
           if (ballX >= paddleX[1] && ballX <= paddleX[1] + paddleWidth) {
             // Add speed on hit
@@ -238,14 +238,18 @@ export default function Pvp() {
           renderWinner()
 
           setTimeout(async () => {
+            
             if (isReferee) {
+              
               await postResult()
             }
-
+            
             score = [ 0, 0 ]
             playAnimation = true
             
-          })
+            window.requestAnimationFrame(animate)
+            
+          }, 3000)
         }
       }
 

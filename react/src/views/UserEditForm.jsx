@@ -1,6 +1,8 @@
 import {useEffect, useState} from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import axiosClient from '../axios-client'
+
+import ChangePassword from './ChangePassword'
 
 
 export default function UserEditForm() {
@@ -11,15 +13,21 @@ export default function UserEditForm() {
     const [user, setUser] = useState({
         id: null,
         name: '',
-        email: ''
+        email: '',
+        password: '',
+        password_confirmation: ''
     })
 
     useEffect(() => {
-        axiosClient.get(`/user/${id}`)
+        getData()
+    }, []) 
+
+    const getData = () => {
+      axiosClient.get(`/user/${id}`)
             .then(({data}) => {
                 setUser(data)
             })
-    }, []) 
+    }
 
     const onSubmit = (ev) => {
         ev.preventDefault()
@@ -27,6 +35,9 @@ export default function UserEditForm() {
             .then(() => {
                 // TODO show user edit notification
               navigate('/user')
+            })
+            .then((err) => {
+              console.log(err);
             })
     }
 
@@ -44,7 +55,17 @@ export default function UserEditForm() {
                 <input className='form-control' value={user.email} onChange={ev => setUser({...user, email: ev.target.value})} placeholder="Email" />
                 <label className='form-label'>Email</label>
               </div>
-              <button className='btn btn-primary'>Сохранить</button>
+              <div className='form-floating mb-3'>
+                <input className='form-control' onChange={ev => setUser({...user, password: ev.target.value})} placeholder="Password" />
+                <label className='form-label'>Password</label>
+              </div>
+              <div className='form-floating mb-3'>
+                <input className='form-control' onChange={ev => setUser({...user, password_confirmation: ev.target.value})} placeholder="Password confirmation" />
+                <label className='form-label'>Password confirmation</label>
+              </div>
+              <button className='btn btn-success'>Сохранить</button>
+              &nbsp;
+              &nbsp;
             </form>
         </div>
       )
