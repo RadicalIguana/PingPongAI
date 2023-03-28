@@ -1,59 +1,82 @@
 version: '3.8'
 
 networks:
-    app-network:
-
-volumes:
-    app-data:
+    laravel:
 
 services:
 
-    webserver:
-        image: nginx:1.21.6-alpine
-        container_name: webserver
-        restart: unless-stopped
+    nginx:
+        image: nginx:stable-alpine
+        container_name: nginx
         ports:
-            - "80:80"
+            - "8088:80"
         volumes:
-            - ./:/var/www
-            - .docker/nginx:/etc/nginx/conf.d
+            - ./laravel:/var/www/html
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
         depends_on:
-            - backend
-            - database
+            - php
+            - postgresql
         networks:
-            app-network:
-    
-    backend:
-        build:
-            context: .docker/php
-            dockerfile: dockerfile
-        container_name: backend
-        volumes:
-            - ./:/var/www
-            - .docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini
-        networks:
-            app-network:
+            - laravel
 
-    database:
-        container_name: PingPong_DB
-        image: postgres:13.1-alpine
+    php:
+        container_name: php
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - ./laravel:/var/www/html
+            # - .docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini
+        ports:
+            - "9000:9000"
+        networks:
+            - laravel
+
+    postgresql:
+        container_name: postgresql
+        image: postgres
         environment:
             POSTGRES_DB: PingPongDB
             POSTGRES_USER: root
             POSTGRES_PASSWORD: root
-            PGDATA: /var/lib/postgresql/data
+        volumes:
+            - ./postgresql/data:/var/lib/postgresql/data
         ports:
-            - 5432:5432
-
+            - "5432:5432"
+        networks:
+            - laravel
         restart: always
-    
-    pgadmin:
-        image: dpage/pgadmin4
-        container_name: pgAdmin
-        ports:
-            - "5050:80"
+
+    composer:
+        image: composer:latest
+        container_name: composer
+        volumes: 
+            - ./laravel:/var/www/html
+        working_dir: /var/www/html
+        networks:
+            - laravel
+        
+    npm:
+        image: node:19.6
+        container_name: npm
+        volumes:
+            - ./laravel:/var/www/html
+        working_dir: /var/www/html/react
+        entrypoint: ['npm']
+        networks:
+            - laravel
+
+    artisan:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: artisan
+        volumes:
+            - ./laravel:/var/www/html
         depends_on:
-            - database
-        environment:
-            PGADMIN_DEFAULT_EMAIL: d.lapsar16@gmail.com
-            PGADMIN_DEFAULT_PASSWORD: password 
+            -   postgresql
+        working_dir: /var/www/html
+        entrypoint: ['/var/www/html/artisan']
+        networks:
+            - laravel
+    
