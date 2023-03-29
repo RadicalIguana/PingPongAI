@@ -4,7 +4,6 @@ networks:
     laravel:
 
 services:
-
     nginx:
         image: nginx:stable-alpine
         container_name: nginx
@@ -16,19 +15,31 @@ services:
         depends_on:
             - php
             - postgresql
+            - client
         networks:
             - laravel
 
     php:
         container_name: php
         build:
-            context: .
+            context: ./laravel
             dockerfile: Dockerfile
         volumes:
-            - ./laravel:/var/www/html
-            # - .docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini
+            - ./laravel:/app/laravel
         ports:
-            - "9000:9000"
+            - 8000:8000
+        networks:
+            - laravel
+
+    client:
+        container_name: client
+        build:
+            context: ./react
+            dockerfile: Dockerfile
+        ports:
+            - 5001:5173
+        volumes:
+            - ./react:/app/react
         networks:
             - laravel
 
@@ -47,36 +58,7 @@ services:
             - laravel
         restart: always
 
-    composer:
-        image: composer:latest
-        container_name: composer
-        volumes: 
-            - ./laravel:/var/www/html
-        working_dir: /var/www/html
-        networks:
-            - laravel
-        
-    npm:
-        image: node:19.6
-        container_name: npm
-        volumes:
-            - ./laravel:/var/www/html
-        working_dir: /var/www/html/react
-        entrypoint: ['npm']
-        networks:
-            - laravel
+    
 
-    artisan:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        container_name: artisan
-        volumes:
-            - ./laravel:/var/www/html
-        depends_on:
-            -   postgresql
-        working_dir: /var/www/html
-        entrypoint: ['/var/www/html/artisan']
-        networks:
-            - laravel
+    
     
