@@ -36,8 +36,11 @@ services:
         build:
             context: ./react
             dockerfile: Dockerfile
+        environment:
+            - WDS_SOCKET_PORT=0
         ports:
             - 5001:5173
+            - 4000:4000
         volumes:
             - ./react:/app/react
         networks:

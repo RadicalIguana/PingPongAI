@@ -5,7 +5,10 @@ import axiosClient from '../../axios-client'
 import { useStateContext } from '../../contexts/contextProvider'
 
 //const HOST = 'http://192.168.0.7:4000'
-const HOST = 'http://localhost:4000'
+// const HOST = 'http://localhost:4000'
+
+const HOST = '/ws'
+// const HOST = {path: '/socket.io'}
 
 export default function Pvp() {
 

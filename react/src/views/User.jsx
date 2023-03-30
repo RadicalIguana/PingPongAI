@@ -110,7 +110,7 @@ export default function User() {
                   <div className='col mt-2'><Link to={"/user/"+user.id} className='btn btn-primary'>Редактировать</Link></div>
                   <div className='col mt-2'><button  className='btn btn-danger' data-bs-toggle='modal' data-bs-target='#exampleModal'>Удалить</button></div>
                   {/* Modal window */}
-                  <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div className="modal-dialog">
                       <div className="modal-content">
                         <div className="modal-header">

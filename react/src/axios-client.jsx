@@ -4,7 +4,8 @@ import axios from 'axios'
 // const PORT = '8000'
 // const HOST = '192.168.0.7'
 // For Docker
-const HOST = '0.0.0.0'
+// const HOST = '0.0.0.0'
+const HOST = 'php'
 const PORT = '8000'
 const DOCKER = '/api'
 
@@ -27,7 +28,6 @@ axiosClient.interceptors.response.use((response) => {
     if (response.status === 401) {
         localStorage.removeItem('ACCESS_TOKEN')
     }
-
     throw error
 })
 

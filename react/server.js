@@ -1,6 +1,5 @@
 
 
-const { log } = require('console');
 const express = require('express')
 const app = express()
 const server= require('http').createServer(app);
@@ -18,6 +17,8 @@ const HOST = 'localhost'
 server.listen(PORT, HOST, ()=>{
     console.log(`Listening on ${HOST}:${PORT} ...`)
 });
+
+
 
 let readyPlayerCount = 0;
 

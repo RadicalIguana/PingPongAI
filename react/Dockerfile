@@ -27,5 +27,6 @@ FROM node:alpine
 WORKDIR /app/react
 COPY . .
 RUN npm install
-EXPOSE 5173
+EXPOSE 5173 4000
 CMD npm run dev
+
