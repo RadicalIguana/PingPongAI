@@ -9,8 +9,11 @@ Server - nginx
 git clone https://github.com/RadicalIguana/PingPongAI.git
 git checkout dev
 
+* Локально
+
 Laravel
 
+cd laravel
 cp .env.example .env
 composer install 
 php artisan serve
@@ -24,6 +27,12 @@ node server
 
 PostgreSQL
 docker-compose up
+
+* В докере
+
+docker-compose build && docker-compose up -d
+
+
 
 
 

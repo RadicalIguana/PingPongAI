@@ -1,5 +1,6 @@
 
 
+const { log } = require('console');
 const express = require('express')
 const app = express()
 const server= require('http').createServer(app);
@@ -14,9 +15,13 @@ const PORT = 4000;
 // const HOST = '192.168.0.7'
 const HOST = 'localhost'
 
-server.listen(PORT, HOST, ()=>{
-    console.log(`Listening on ${HOST}:${PORT} ...`)
-});
+// server.listen(PORT, HOST, ()=>{
+//     console.log(`Listening on ${HOST}:${PORT} ...`)
+// });
+
+server.listen(4000, () => {
+    console.log(`Listening on ${PORT}`)
+})
 
 
 

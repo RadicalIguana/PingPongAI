@@ -12,6 +12,7 @@ const DOCKER = '/api'
 const axiosClient = axios.create({
     // baseURL: `http://${HOST}:${PORT}/api`
     baseURL : DOCKER
+    // baseURL: 'http://localhost:8000/api'
 })
 
 axiosClient.interceptors.request.use((config) => {

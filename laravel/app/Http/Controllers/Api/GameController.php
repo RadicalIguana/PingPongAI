@@ -85,7 +85,7 @@ class GameController extends Controller
             ], 200);
         }
 
-        $winrate = $wins / $total * 100;
+        $winrate = floor($wins / $total * 100);
 
         return response()->json([
             'data' => $winrate

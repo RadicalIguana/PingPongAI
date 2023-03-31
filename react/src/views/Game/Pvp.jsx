@@ -260,7 +260,7 @@ export default function Pvp() {
       async function loadGame() {
         createCanvas()
         renderIntro()
-        socket = io.connect(HOST)
+        socket = io.connect("ws://localhost:4000")
 
         await getUsers()
 
