@@ -122,7 +122,7 @@ export default function User() {
                         </div>
                         <div className="modal-footer">
                           <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                          <button type="button" className="btn btn-danger" onClick={ev => onDelete(user)}>Удалить</button>
+                          <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={ev => onDelete(user)}>Удалить</button>
                         </div>
                       </div>
                     </div>

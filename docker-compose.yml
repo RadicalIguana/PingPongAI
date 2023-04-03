@@ -18,6 +18,7 @@ services:
             - client
         networks:
             - laravel
+        restart: always
 
     php:
         container_name: php
@@ -30,6 +31,7 @@ services:
             - 8000:8000
         networks:
             - laravel
+        restart: always
 
     client:
         container_name: client
@@ -43,6 +45,7 @@ services:
             - ./react:/app/react
         networks:
             - laravel
+        restart: always
 
     postgresql:
         container_name: postgresql
@@ -63,3 +66,4 @@ services:
 
     
     
+

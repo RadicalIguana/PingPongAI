@@ -66,7 +66,10 @@ RUN apt-get update && apt-get install -y \
     unzip
 
 # Install PHP extensions
-RUN docker-php-ext-install mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install mbstring exif pcntl bcmath gd 
+
+# Nginx + php-fpm + docker works too slow
+RUN docker-php-ext-install opcache
 
 # Install Postgre PDO
 RUN apt-get update && apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql

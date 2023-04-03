@@ -27,7 +27,6 @@ function Ball(p5, game) {
         if (this.y - this.size / 2 <= 1 || this.y + this.size / 2 >= p5.height - 1) {
             this.vy *= -1
         }
-        // ...
         if (this.x - this.size / 2 <= this.game.leftPaddle.x - this.game.leftPaddle.width / 2 - 10 || this.x + this.size / 2 >= this.game.rightPaddle.x + this.game.rightPaddle.width / 2 + 10) {
             // TODO isPersonPlaying || isAIPlaying
             // if (isPersonPlaying || isAIPlaying) {

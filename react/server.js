@@ -51,7 +51,6 @@ io.sockets.on('connection', (socket) => {
 
             io.sockets.in(room).emit('startGame', socket.id)
 
-            // TODO Вот эта хуета возвращает на клиента последних двух юзеров, которые играют в одну игру
             io.sockets.to(room).emit('getData', lastTwoUsersId, lastTwoUsers)
 
             console.log(users);

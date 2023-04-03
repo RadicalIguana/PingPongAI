@@ -33,7 +33,6 @@ export default function UserEditForm() {
         ev.preventDefault()
         axiosClient.put(`/user/${id}`, user)
             .then(() => {
-                // TODO show user edit notification
               navigate('/user')
             })
             .then((err) => {

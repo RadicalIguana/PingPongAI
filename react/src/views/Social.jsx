@@ -79,9 +79,7 @@ export default function Social() {
   }
 
   const onCancel = (id) => {
-    if (!window.confirm("Are you sure about cancel?")) {
-      return
-    }
+
     setCancelButtonText('Заявка отменена')
 
     axiosClient.post('/delete', {id})
@@ -94,9 +92,6 @@ export default function Social() {
 
   const onDenied = (id) => {
 
-    if (!window.confirm("Are you sure about cancel?")) {
-      return
-    }
     setDeniedButtonText('Заявка отклонена')
 
     axiosClient.post('/denied', {id})
@@ -203,7 +198,36 @@ export default function Social() {
                           {
                             userId == u.user_id ?
                               <div>
-                                <button className='btn btn-danger' onClick={ev => onCancel(u.id)}>{cancelButtonText}</button>
+                                {/* <button className='btn btn-danger' onClick={ev => onCancel(u.id)}>{cancelButtonText}</button> */}
+
+                                <div>
+                                  <div>
+                                    <button className='btn btn-danger' 
+                                      data-bs-toggle='modal' data-bs-target='#exampleModal'>
+                                        {cancelButtonText}
+                                    </button>
+                                  </div>
+
+                                  {/* Modal window */}
+                                  <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div className="modal-dialog">
+                                      <div className="modal-content">
+                                        <div className="modal-header">
+                                          <h1 className="modal-title fs-5" id="exampleModalLabel">Отмена заявки</h1>
+                                          <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div className="modal-body"  style={{whiteSpace: 'pre-wrap'}}>
+                                          Вы уверены, что хотите отменить заявку в друзья?
+                                        </div>
+                                        <div className="modal-footer">
+                                          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                          <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={ev => onCancel(u.id)}>{cancelButtonText}</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
                               </div>
                               : <div>
                                 <button className='btn btn-success' onClick={ev => onAccept(u.id)}>{acceptButtonText}</button>
@@ -240,7 +264,7 @@ export default function Social() {
                                     </div>
                                     <div className="modal-footer">
                                       <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                                      <button type="button" className="btn btn-danger" onClick={ev => onDelete(u.id)}>Удалить</button>
+                                      <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={ev => onDelete(u.id)}>Удалить</button>
                                     </div>
                                   </div>
                                 </div>

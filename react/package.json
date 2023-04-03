@@ -12,6 +12,10 @@
     "dev": "concurrently \"npm run client\" \"npm run socket\""
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.15",
     "axios": "^1.3.3",
     "bootstrap": "^5.2.3",
     "concurrently": "^8.0.1",
