@@ -44,6 +44,7 @@ export default function Social() {
       .then(({data}) => {
           setExisting(true)
           setFriends(data.data)
+          console.log(data.data);
         }
         )
       .catch(err => {

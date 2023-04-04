@@ -97,7 +97,8 @@ export default function UserProfile() {
                 <h5>Email:</h5>
                 <h5>Количество игр:</h5>
                 <h5>Процент побед:</h5>
-                <div className='row'>
+                
+                {/* <div className='row'>
                   <div className='col mt-2'>
                     <button type='button'  className='btn btn-danger' 
                       data-bs-toggle='modal' data-bs-target='#exampleModal'>
@@ -105,7 +106,6 @@ export default function UserProfile() {
                     </button>
                   </div>
 
-                  {/* Modal window */}
                   <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div className="modal-dialog">
                         <div className="modal-content">
@@ -124,7 +124,8 @@ export default function UserProfile() {
                       </div>
                     </div>
 
-                </div>
+                </div> */}
+                
               </div>
               <div className='col'>
                 <h5>{user.id}</h5>

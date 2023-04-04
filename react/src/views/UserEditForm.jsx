@@ -65,6 +65,7 @@ export default function UserEditForm() {
               <button className='btn btn-success'>Сохранить</button>
               &nbsp;
               &nbsp;
+              <Link to='/user' className='btn btn-danger'>Отмена</Link>
             </form>
         </div>
       )

@@ -51,6 +51,24 @@ class UserFriendController extends Controller
             ->where('users.name', 'like', $foundUser)
             ->get();
 
+        // $data = $users->get(0);
+        // $friend_id = $data->id; 
+
+        // $friends = DB::table('users_friends')
+        //     ->where('user_id', '=', Auth::user()->id)
+        //     ->where('friend_id', '=', $friend_id)
+        //     ->orWhere('friend_id', '=', Auth::user()->id)
+        //     ->where('user_id', '=', $friend_id)
+        //     ->count();
+
+        // if ($friends != 0) {
+        //     $friendship = true;
+        // } else {
+        //     $friendship = false;
+        // }
+        
+        // $users->put('friedship', $friendship);
+
         return response()->json([
             'data' => $users
         ], 200);

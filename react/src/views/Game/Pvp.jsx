@@ -95,6 +95,7 @@ export default function Pvp() {
   
         ctx.fillStyle = 'white'
         ctx.font = '16px Courier New'
+        ctx.textBaseline = 'middle'
         ctx.fillText("Waiting for opponent...", 50, (canvas.height / 2) - 30)
       }
 
@@ -110,6 +111,7 @@ export default function Pvp() {
           loser = userIds[0]
           loser_name = players[0]
           
+          ctx.textBaseline = 'middle'
           ctx.fillText(`${players[1]} Wins!`, 60, (canvas.height / 2) - 30)
         }
         if (score[1] == 3) {
@@ -118,8 +120,10 @@ export default function Pvp() {
           loser = userIds[1]
           loser_name = players[1]
           
+          ctx.textBaseline = 'middle'
           ctx.fillText(`${players[0]} Wins!`, 80, (canvas.height / 2) - 30)
         }
+        ctx.textBaseline = 'middle'
         ctx.fillText(`${score[0]} : ${score[1]}`, 125, (canvas.height / 2) - 60)
       }
   
